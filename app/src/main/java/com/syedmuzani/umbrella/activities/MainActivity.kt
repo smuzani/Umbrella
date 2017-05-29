@@ -1,12 +1,12 @@
 package com.syedmuzani.umbrella.activities
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.widget.AdapterView
-import android.widget.ListView
 import com.syedmuzani.umbrella.R
 import com.syedmuzani.umbrella.adapters.MainPageListAdapter
 import com.syedmuzani.umbrella.models.MainMenuLink
@@ -22,19 +22,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.listview)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        val lv = findViewById(R.id.lv) as ListView
-        initListView()
-        lv.adapter = MainPageListAdapter(activity, links)
-        lv.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val link = links[position]
-            val bundle = Bundle()
-            val intent = Intent(activity, link.activityClass)
-            startActivity(intent)
-        }
+        val rv = findViewById(R.id.rv) as RecyclerView
+        initRecyclerView()
+        rv.layoutManager = LinearLayoutManager(this)
+        val orientation = (rv.layoutManager as LinearLayoutManager).orientation
+        val dividerItemDecoration = DividerItemDecoration(this, orientation)
+        rv.addItemDecoration(dividerItemDecoration)
+        rv.adapter = MainPageListAdapter(links)
+//        lv.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+//            val link = links[position]
+//            val bundle = Bundle()
+//            val intent = Intent(activity, link.activityClass)
+//            startActivity(intent)
+//        }
 
     }
 
-    private fun initListView() {
+    private fun initRecyclerView() {
+        links.add(MainMenuLink("Facebook Login", LoginActivity::class.java))
         links.add(MainMenuLink("Facebook Login", LoginActivity::class.java))
     }
 }

@@ -3,6 +3,8 @@ package com.syedmuzani.umbrella.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.syedmuzani.umbrella.R
 
 class LoginActivity : AppCompatActivity() {
@@ -12,6 +14,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
 }

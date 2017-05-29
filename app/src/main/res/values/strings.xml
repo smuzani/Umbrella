@@ -2,4 +2,9 @@
     <string name="app_name">Umbrella</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Facebook login -->
+    <string name="facebook_app_id">239880826498063</string>
+    <string name="fb_login_protocol_scheme">fb239880826498063</string>
+
 </resources>
