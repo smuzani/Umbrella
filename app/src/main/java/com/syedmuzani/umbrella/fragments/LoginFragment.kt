@@ -28,7 +28,6 @@ class LoginFragment : Fragment() {
             val accessToken = loginResult.accessToken
             val profile: Profile? = Profile.getCurrentProfile()
             displayMessage(profile)
-            context.toast("Logged in as "+ profile?.name)
         }
 
         override fun onCancel() {
@@ -48,7 +47,8 @@ class LoginFragment : Fragment() {
 
         accessTokenTracker = object : AccessTokenTracker() {
             override fun onCurrentAccessTokenChanged(oldToken: AccessToken?, newToken: AccessToken?) {
-
+                // Set the access token using
+                // currentAccessToken when it's loaded or set.
             }
         }
 
@@ -71,7 +71,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val loginButton = view!!.findViewById(R.id.login_button) as LoginButton
 
-        loginButton.setReadPermissions("public_profile, email")
+        loginButton.setReadPermissions("public_profile", "email")
         loginButton.fragment = this
         loginButton.registerCallback(callbackManager, callback)
 
