@@ -115,6 +115,7 @@ class LoginFragment : Fragment() {
         loginButton.setReadPermissions(permissions)
         loginButton.fragment = this
         loginButton.registerCallback(callbackManager, callback)
+        LoginManager.getInstance().registerCallback(callbackManager, callback)
         return v;
     }
 
