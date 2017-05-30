@@ -2,6 +2,7 @@ package com.syedmuzani.umbrella.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import com.facebook.*
+import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.syedmuzani.umbrella.R
 import org.jetbrains.anko.toast
 import java.util.*
+
 
 /**
  * Code from https://github.com/hananideen/Login
@@ -24,13 +27,17 @@ class LoginFragment : Fragment() {
     private var callbackManager: CallbackManager? = null
 
     private var accessTokenTracker: AccessTokenTracker? = null
+    private var accessToken: AccessToken? = null
     private var profileTracker: ProfileTracker? = null
+    lateinit private var btLogin: Button
+
+    val permissions: List<String> = Arrays.asList("public_profile", "user_friends")
 
     private val callback = object : FacebookCallback<LoginResult> {
         override fun onSuccess(loginResult: LoginResult) {
-            val accessToken = loginResult.accessToken
-            val profile: Profile? = Profile.getCurrentProfile()
-            displayMessage(profile)
+            accessToken = loginResult.accessToken
+            context.toast("Success!")
+            setButton()
         }
 
         override fun onCancel() {
@@ -50,14 +57,15 @@ class LoginFragment : Fragment() {
 
         accessTokenTracker = object : AccessTokenTracker() {
             override fun onCurrentAccessTokenChanged(oldToken: AccessToken?, newToken: AccessToken?) {
-                // Set the access token using
-                // currentAccessToken when it's loaded or set.
+                updateWithToken(newToken);
+                setButton()
             }
         }
 
         profileTracker = object : ProfileTracker() {
             override fun onCurrentProfileChanged(oldProfile: Profile?, newProfile: Profile?) {
                 displayMessage(newProfile)
+                setButton()
             }
         }
 
@@ -65,17 +73,45 @@ class LoginFragment : Fragment() {
         profileTracker?.startTracking()
     }
 
+    fun isLoggedIn(): Boolean {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        return accessToken != null
+    }
+
+    // TODO Bug: Is not being called upon logout
+    fun setButton() {
+        if (!isLoggedIn()) {
+            btLogin.text = "Facebook Login"
+            btLogin.setOnClickListener {
+                LoginManager.getInstance().logInWithReadPermissions(this, permissions)
+            }
+        } else {
+            btLogin.text = "Facebook Log Out"
+            btLogin.setOnClickListener {
+                LoginManager.getInstance().logOut()
+            }
+        }
+    }
+
+    private fun updateWithToken(currentAccessToken: AccessToken?) {
+        val TIMEOUT = 20000L
+        if (currentAccessToken != null) {
+            Handler().postDelayed({
+                displayMessage(Profile.getCurrentProfile())
+            }, TIMEOUT)
+        } else {
+            Handler().postDelayed({
+                context.toast("Not logged in")
+            }, TIMEOUT)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater!!.inflate(R.layout.fragment_login, container, false)
         val loginButton = v.findViewById(R.id.login_button) as LoginButton
-        val btLogin = v.findViewById(R.id.bt_login) as Button
-
-        val permissions = Arrays.asList("public_profile", "user_friends")
-        btLogin.setOnClickListener {
-            LoginManager.getInstance().logInWithReadPermissions(this, permissions)
-        }
-
+        btLogin = v.findViewById(R.id.bt_login) as Button
+        setButton()
         loginButton.setReadPermissions(permissions)
         loginButton.fragment = this
         loginButton.registerCallback(callbackManager, callback)
@@ -84,8 +120,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
