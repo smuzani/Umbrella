@@ -1,50 +1,102 @@
 package com.syedmuzani.umbrella.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import android.widget.Toast
+import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.syedmuzani.umbrella.R
-import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 
-
 /**
- * A placeholder fragment containing a simple view.
+ * Code from https://github.com/hananideen/Login
  */
 class LoginFragment : Fragment() {
 
+    private var callbackManager: CallbackManager? = null
+
+    private var accessTokenTracker: AccessTokenTracker? = null
+    private var profileTracker: ProfileTracker? = null
+
+    private val callback = object : FacebookCallback<LoginResult> {
+        override fun onSuccess(loginResult: LoginResult) {
+            val accessToken = loginResult.accessToken
+            val profile: Profile? = Profile.getCurrentProfile()
+            displayMessage(profile)
+            context.toast("Logged in as "+ profile?.name)
+        }
+
+        override fun onCancel() {
+            context.toast("Canceled")
+        }
+
+        override fun onError(e: FacebookException) {
+            context.toast("Error: " + e.toString())
+        }
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        callbackManager = CallbackManager.Factory.create()
+
+        accessTokenTracker = object : AccessTokenTracker() {
+            override fun onCurrentAccessTokenChanged(oldToken: AccessToken?, newToken: AccessToken?) {
+
+            }
+        }
+
+        profileTracker = object : ProfileTracker() {
+            override fun onCurrentProfileChanged(oldProfile: Profile?, newProfile: Profile?) {
+                displayMessage(newProfile)
+            }
+        }
+
+        accessTokenTracker?.startTracking()
+        profileTracker?.startTracking()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        return inflater!!.inflate(R.layout.fragment_login, container, false)
+    }
 
-        val v = inflater!!.inflate(R.layout.fragment_login, container, false)
-        var loginButton: LoginButton = v.find(R.id.login_button);
-        loginButton.setReadPermissions("email")
-        // If using in a fragment
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val loginButton = view!!.findViewById(R.id.login_button) as LoginButton
+
+        loginButton.setReadPermissions("public_profile, email")
         loginButton.fragment = this
-        // Other app specific specialization
+        loginButton.registerCallback(callbackManager, callback)
 
-        // Callback registration
-        val callbackManager = CallbackManager.Factory.create();
-        loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                context.toast("Success! " + loginResult.toString())
-            }
+    }
 
-            override fun onCancel() {
-                context.toast("Canceled")
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
+    }
 
-            override fun onError(exception: FacebookException) {
-                context.toast("Error: " + exception.toString())
-            }
-        })
-        return v
+    private fun displayMessage(profile: Profile?) {
+        if (profile != null) {
+            Toast.makeText(activity, "User: " + profile.name, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        accessTokenTracker?.stopTracking()
+        profileTracker?.stopTracking()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val profile = Profile.getCurrentProfile()
+        displayMessage(profile)
     }
 }
