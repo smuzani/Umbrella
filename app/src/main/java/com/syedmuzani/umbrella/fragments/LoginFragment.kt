@@ -6,12 +6,15 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import com.facebook.*
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.syedmuzani.umbrella.R
 import org.jetbrains.anko.toast
+import java.util.*
 
 /**
  * Code from https://github.com/hananideen/Login
@@ -64,16 +67,24 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_login, container, false)
+        val v = inflater!!.inflate(R.layout.fragment_login, container, false)
+        val loginButton = v.findViewById(R.id.login_button) as LoginButton
+        val btLogin = v.findViewById(R.id.bt_login) as Button
+
+        val permissions = Arrays.asList("public_profile", "user_friends")
+        btLogin.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, permissions)
+        }
+
+        loginButton.setReadPermissions(permissions)
+        loginButton.fragment = this
+        loginButton.registerCallback(callbackManager, callback)
+        return v;
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val loginButton = view!!.findViewById(R.id.login_button) as LoginButton
 
-        loginButton.setReadPermissions("public_profile", "email")
-        loginButton.fragment = this
-        loginButton.registerCallback(callbackManager, callback)
 
     }
 

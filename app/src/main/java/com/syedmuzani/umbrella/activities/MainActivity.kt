@@ -29,13 +29,6 @@ class MainActivity : AppCompatActivity() {
         val dividerItemDecoration = DividerItemDecoration(this, orientation)
         rv.addItemDecoration(dividerItemDecoration)
         rv.adapter = MainPageListAdapter(links)
-//        lv.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-//            val link = links[position]
-//            val bundle = Bundle()
-//            val intent = Intent(activity, link.activityClass)
-//            startActivity(intent)
-//        }
-
     }
 
     private fun initRecyclerView() {
