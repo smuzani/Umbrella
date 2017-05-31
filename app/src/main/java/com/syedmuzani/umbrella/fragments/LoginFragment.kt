@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +17,16 @@ import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.syedmuzani.umbrella.R
 import org.jetbrains.anko.toast
+import org.json.JSONException
 import java.util.*
 
 
 /**
- * Code from https://github.com/hananideen/Login
+ * Code partially from https://github.com/hananideen/Login
  */
 class LoginFragment : Fragment() {
+
+    val TAG = "LoginFragment"
 
     private var callbackManager: CallbackManager? = null
 
@@ -37,6 +41,9 @@ class LoginFragment : Fragment() {
         override fun onSuccess(loginResult: LoginResult) {
             accessToken = loginResult.accessToken
             context.toast("Success!")
+            if (accessToken != null) {
+                getUserDetailsFromFB(accessToken!!)
+            }
             setButton()
         }
 
@@ -144,5 +151,23 @@ class LoginFragment : Fragment() {
         super.onResume()
         val profile = Profile.getCurrentProfile()
         displayMessage(profile)
+    }
+
+    private fun getUserDetailsFromFB(accessToken: AccessToken) {
+        val request = GraphRequest.newMeRequest(accessToken) { user, _ ->
+            try {
+                val id = user.getString("id")
+                val name = user.getString("name")
+                val email = user.getString("email")
+                val gender = user.getString("gender")
+                Log.d(TAG, "id: $id, name: $name, email: $email, gender: $gender")
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+        val parameters = Bundle()
+        parameters.putString("fields", "id,name,email,gender")
+        request.parameters = parameters
+        request.executeAsync()
     }
 }
