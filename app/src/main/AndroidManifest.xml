@@ -47,7 +47,9 @@
             android:name=".activities.FacebookLoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.ToDoActivity"></activity>
+        <activity android:name=".activities.ToDoActivity" />
+        <activity android:name=".activities.DesignPatternsActivity" />
+        <activity android:name=".activities.ConstraintLayoutActivity"></activity>
     </application>
 
 </manifest>
