@@ -12,6 +12,9 @@ import com.syedmuzani.umbrella.adapters.MainPageListAdapter
 import com.syedmuzani.umbrella.models.MainMenuLink
 import java.util.*
 
+/**
+ * Central point to visit all other libraries
+ */
 class MainActivity : AppCompatActivity() {
 
     internal var activity: Activity = this
@@ -32,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        links.add(MainMenuLink("Facebook Login", LoginActivity::class.java))
-//        links.add(MainMenuLink("Facebook Login", LoginActivity::class.java))
+        links.add(MainMenuLink("Facebook Login", FacebookLoginActivity::class.java))
     }
 }

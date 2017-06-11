@@ -12,8 +12,10 @@ import com.facebook.login.LoginResult
 import com.syedmuzani.umbrella.R
 import org.jetbrains.anko.toast
 
-
-class LoginActivity : AppCompatActivity() {
+/**
+ * Login to Facebook
+ */
+class FacebookLoginActivity : AppCompatActivity() {
 
     lateinit var callbackManager: CallbackManager
 
