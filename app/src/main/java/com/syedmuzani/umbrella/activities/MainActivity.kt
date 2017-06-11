@@ -36,5 +36,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         links.add(MainMenuLink("Facebook Login", FacebookLoginActivity::class.java))
+        links.add(MainMenuLink("To Do List", ToDoActivity::class.java))
     }
 }
