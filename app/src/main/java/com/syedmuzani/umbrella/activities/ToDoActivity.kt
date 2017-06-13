@@ -14,6 +14,7 @@ import java.io.IOException
 
 /**
  * To Do list based on https://guides.codepath.com/android/Basic-Todo-App-Tutorial
+ * TODO: Improve with https://www.sitepoint.com/building-a-ui-with-kotlin-and-anko/
  */
 
 class ToDoActivity : AppCompatActivity() {

@@ -49,7 +49,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.ToDoActivity" />
         <activity android:name=".activities.DesignPatternsActivity" />
-        <activity android:name=".activities.ConstraintLayoutActivity"></activity>
+        <activity android:name=".activities.ConstraintLayoutActivity" />
+        <activity android:name=".activities.DslActivity"></activity>
     </application>
 
 </manifest>
