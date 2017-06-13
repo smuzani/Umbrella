@@ -50,7 +50,8 @@
         <activity android:name=".activities.ToDoActivity" />
         <activity android:name=".activities.DesignPatternsActivity" />
         <activity android:name=".activities.ConstraintLayoutActivity" />
-        <activity android:name=".activities.DslActivity"></activity>
+        <activity android:name=".activities.DslActivity" />
+        <activity android:name=".activities.VideoActivity"></activity>
     </application>
 
 </manifest>

@@ -38,5 +38,6 @@ class MainActivity : AppCompatActivity() {
         links.add(MainMenuLink("Facebook Login", FacebookLoginActivity::class.java))
         links.add(MainMenuLink("To Do List", ToDoActivity::class.java))
         links.add(MainMenuLink("Anko DSL Layouts", DslActivity::class.java))
+        links.add(MainMenuLink("VideoView", VideoActivity::class.java))
     }
 }

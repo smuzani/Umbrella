@@ -20,6 +20,7 @@ class DslActivity : AppCompatActivity() {
     class DslActivityUI : AnkoComponent<DslActivity> {
         companion object {
             val ID_CANCEL = 11
+            val ID_FB_LOGIN = 50
         }
 
         override fun createView(ui: AnkoContext<DslActivity>) = with(ui) {
