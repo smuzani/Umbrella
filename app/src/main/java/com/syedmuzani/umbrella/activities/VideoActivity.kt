@@ -22,6 +22,7 @@ class VideoActivity : AppCompatActivity() {
         mVideoView.setMediaController(MediaController(this))
         mVideoView.requestFocus()
         mVideoView.start()
+        mVideoView.setOnCompletionListener { toast("Video completed") }
     }
 
     class VideoActivityUI : AnkoComponent<VideoActivity> {
@@ -30,11 +31,10 @@ class VideoActivity : AppCompatActivity() {
         }
 
         override fun createView(ui: AnkoContext<VideoActivity>) = with(ui) {
-            videoView {
-                id = ID_VIDEO
-            }.lparams {
-                height = matchParent
-                width = matchParent
+            frameLayout {
+                videoView {
+                    id = ID_VIDEO
+                }.lparams(matchParent, matchParent)
             }
         }
     }
