@@ -7,4 +7,6 @@
     <string name="facebook_app_id">239880826498063</string>
     <string name="fb_login_protocol_scheme">fb239880826498063</string>
 
+    <string name="instructions">Place your fingertip on the Home button to verify your identity</string>
+
 </resources>

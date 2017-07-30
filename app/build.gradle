@@ -32,7 +32,8 @@ dependencies {
 
     // Anko Layouts
     compile "org.jetbrains.anko:anko-common:$anko_version" // Anko, Kotlin extensions and UI
-    compile "org.jetbrains.anko:anko-sdk25:$anko_version" // sdk15, sdk19, sdk21, sdk23 are also available
+    compile "org.jetbrains.anko:anko-sdk25:$anko_version"
+    // sdk15, sdk19, sdk21, sdk23 are also available
     compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
 
     // Coroutine listeners for Anko Layouts
@@ -40,9 +41,13 @@ dependencies {
     compile "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
 
     compile "com.android.support:cardview-v7:$support_version" // CardView
-    compile 'com.android.support:design:25.3.1' // Material design
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)' // Facebook
-    compile 'com.android.support.constraint:constraint-layout:1.0.2' // ConstraintLayout
-    compile 'org.apache.commons:commons-io:1.3.2' // Common file operations
+    // Material design
+    // Facebook
+    // ConstraintLayout
+    // Common file operations
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'org.apache.commons:commons-io:1.3.2'
     testCompile 'junit:junit:4.12'
 }
