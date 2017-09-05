@@ -54,6 +54,7 @@
         <activity android:name=".activities.DslActivity" />
         <activity android:name=".activities.VideoActivity" />
         <activity android:name=".activities.FingerprintActivity"></activity>
+        <activity android:name=".activities.FirebaseActivity"/>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.syedmuzani.umbrella.R
+import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import org.json.JSONException
 import java.util.*
@@ -116,8 +117,8 @@ class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater!!.inflate(R.layout.fragment_login, container, false)
-        val loginButton = v.findViewById(R.id.login_button) as LoginButton
-        btLogin = v.findViewById(R.id.bt_login) as Button
+        val loginButton: LoginButton = v.find(R.id.login_button)
+        btLogin = v.find(R.id.bt_login)
         setButton()
         loginButton.setReadPermissions(permissions)
         loginButton.fragment = this
