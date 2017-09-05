@@ -12,7 +12,7 @@ import org.jetbrains.anko.find
 
 
 class MainPageListAdapter(val items: List<MainMenuLink>): Adapter<MainPageListAdapter.ViewHold>() {
-    private val TAG = "PaymentChoiceAdapter"
+    private val TAG = "MainPageListAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHold {
         val view = LayoutInflater.from(parent.context)
