@@ -1,6 +1,7 @@
 package com.syedmuzani.umbrella.activities
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
@@ -17,6 +18,19 @@ import java.sql.Timestamp
 class FirebaseActivity : AppCompatActivity() {
 
     lateinit var tvStatus: TextView
+    lateinit var tStart: Timestamp
+    lateinit var tEnd: Timestamp
+    lateinit var tNow: Timestamp
+
+    // Countdown timer that reinitializes every time server time changes
+    var timer: CountDownTimer = object : CountDownTimer(0, 1000) {
+
+        override fun onTick(millisLeft: Long) {
+        }
+
+        override fun onFinish() {
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,17 +60,53 @@ class FirebaseActivity : AppCompatActivity() {
         // This method is called once with the initial value and again
         // whenever data at this location is updated.
         val timer = dataSnapshot.getValue(FirebaseTimestamp::class.java)
-        val tStart = Timestamp(timer.start * 1000)
-        val tEnd = Timestamp(timer.end * 1000)
-        val tNow = Timestamp(System.currentTimeMillis())
+        tStart = Timestamp(timer.start * 1000)
+        tEnd = Timestamp(timer.end * 1000)
+        tNow = Timestamp(System.currentTimeMillis())
 
         if (tNow < tStart) {
-            tvStatus.text = "Time has not yet started"
+            showTimeToStart()
         } else if (tNow >= tStart && tNow < tEnd) {
-            tvStatus.text = "Time is happening"
+            showTimeToEnd()
         } else {
-            tvStatus.text = "Time ended"
+            showTimeAfterEnd()
         }
+    }
+
+    private fun showTimeToStart() {
+        val millisLeft = tStart.time - tNow.time
+        timer.cancel()
+        timer = object: CountDownTimer(millisLeft, 1000) {
+
+            override fun onTick(millisLeft: Long) {
+                val timerText = "Seconds to start: " + millisLeft / 1000
+                tvStatus.text = "Time has not yet started\n$timerText"
+            }
+
+            override fun onFinish() {
+                showTimeToEnd()
+            }
+        }.start()
+    }
+
+    private fun showTimeToEnd() {
+        val millisLeft = tEnd.time - tNow.time
+        timer.cancel()
+        timer = object : CountDownTimer(millisLeft, 1000) {
+
+            override fun onTick(millisLeft: Long) {
+                val timerText = "Seconds to end: " + millisLeft / 1000
+                tvStatus.text = "Time is happening\n$timerText"
+            }
+
+            override fun onFinish() {
+                showTimeAfterEnd()
+            }
+        }.start()
+    }
+
+    private fun showTimeAfterEnd() {
+        tvStatus.text = "Time ended"
     }
 
     private fun test() {
