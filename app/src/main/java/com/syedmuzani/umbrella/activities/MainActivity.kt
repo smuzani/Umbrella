@@ -41,5 +41,6 @@ class MainActivity : AppCompatActivity() {
         links.add(MainMenuLink("VideoView", VideoActivity::class.java))
         links.add(MainMenuLink("Fingerprint", FingerprintActivity::class.java))
         links.add(MainMenuLink("Firebase With Countdown", FirebaseActivity::class.java))
+        links.add(MainMenuLink("Date/TimePicker", DateTimePickerActivity::class.java))
     }
 }
