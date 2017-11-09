@@ -4,25 +4,24 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.syedmuzani.umbrella.R
-import com.syedmuzani.umbrella.models.FirebaseTimestamp
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import java.sql.Timestamp
+import java.util.*
 
-
+/** This activity tries to access Firebase, modify two timers on the server, and shows a different
+ * interface before, during, and after both timers. It was designed for a bidding app, which
+ * would only enable bidding if the current time was after start and before the end timer. **/
 class FirebaseActivity : AppCompatActivity() {
 
-    lateinit var tvStatus: TextView
+    lateinit var textStatus: TextView
     lateinit var tStart: Timestamp
     lateinit var tEnd: Timestamp
     lateinit var tNow: Timestamp
 
-    // Countdown timer that reinitializes every time server time changes
+    /** Countdown timer that restarts every time server time changes **/
     var timer: CountDownTimer = object : CountDownTimer(0, 1000) {
 
         override fun onTick(millisLeft: Long) {
@@ -32,18 +31,39 @@ class FirebaseActivity : AppCompatActivity() {
         }
     }
 
+    /** Holds a single block of start/end timestamps for this, in the form that can be understood
+     * by Firebase **/
+    internal class FirebaseTimestamp {
+        var start: Long = 0
+        var end: Long = 0
+
+        @Exclude
+        fun toMap(): Map<String, Any> {
+            val result = HashMap<String, Any>()
+            result.put("start", start)
+            result.put("end", end)
+            return result
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firebase)
-        tvStatus = find(R.id.tv_status)
+        textStatus = find(R.id.tv_status)
         setupDatetime()
     }
 
+    /** Sets up the datetime on the Firebase server **/
     private fun setupDatetime() {
+        val now: Long = Calendar.getInstance().timeInMillis
+        val startTime = now + START_AFTER_NOW
+        val endTime = now + END_AFTER_NOW
+
         val database = FirebaseDatabase.getInstance()
         val refDate = database.getReference("datetime")
-        refDate.child("start").setValue(1507630210)
-        refDate.child("end").setValue(1507637532)
+        refDate.child("start").setValue(startTime)
+        refDate.child("end").setValue(endTime)
         refDate.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 displayData(dataSnapshot)
@@ -56,47 +76,50 @@ class FirebaseActivity : AppCompatActivity() {
         })
     }
 
+    /** Displays the data whenever the start and end time on the listener is changed.
+     * This will show different interfaces based on whether the time is before, after, or during
+     * the two timers **/
     private fun displayData(dataSnapshot: DataSnapshot) {
-        // This method is called once with the initial value and again
-        // whenever data at this location is updated.
-        val timer = dataSnapshot.getValue(FirebaseTimestamp::class.java)
+        val timer: FirebaseTimestamp = dataSnapshot.getValue(FirebaseTimestamp::class.java)!!
         tStart = Timestamp(timer.start * 1000)
         tEnd = Timestamp(timer.end * 1000)
         tNow = Timestamp(System.currentTimeMillis())
 
         if (tNow < tStart) {
-            showTimeToStart()
+            showTimeBeforeStart()
         } else if (tNow >= tStart && tNow < tEnd) {
-            showTimeToEnd()
+            showTimeOngoing()
         } else {
             showTimeAfterEnd()
         }
     }
 
-    private fun showTimeToStart() {
+    /** Shows an interface if the timer has not started **/
+    private fun showTimeBeforeStart() {
         val millisLeft = tStart.time - tNow.time
         timer.cancel()
-        timer = object: CountDownTimer(millisLeft, 1000) {
+        timer = object : CountDownTimer(millisLeft, 1000) {
 
             override fun onTick(millisLeft: Long) {
                 val timerText = "Seconds to start: " + millisLeft / 1000
-                tvStatus.text = "Time has not yet started\n$timerText"
+                textStatus.text = "Time has not yet started\n$timerText"
             }
 
             override fun onFinish() {
-                showTimeToEnd()
+                showTimeOngoing()
             }
         }.start()
     }
 
-    private fun showTimeToEnd() {
+    /** Shows an interface if the timer has started but hasn't ended **/
+    private fun showTimeOngoing() {
         val millisLeft = tEnd.time - tNow.time
         timer.cancel()
         timer = object : CountDownTimer(millisLeft, 1000) {
 
             override fun onTick(millisLeft: Long) {
                 val timerText = "Seconds to end: " + millisLeft / 1000
-                tvStatus.text = "Time is happening\n$timerText"
+                textStatus.text = "Time is happening\n$timerText"
             }
 
             override fun onFinish() {
@@ -105,10 +128,12 @@ class FirebaseActivity : AppCompatActivity() {
         }.start()
     }
 
+    /** Shows an interface after the timer has ended **/
     private fun showTimeAfterEnd() {
-        tvStatus.text = "Time ended"
+        textStatus.text = "Time ended"
     }
 
+    /** Test function to check if Firebase connection is set up properly **/
     private fun test() {
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("message")
@@ -130,5 +155,7 @@ class FirebaseActivity : AppCompatActivity() {
 
     companion object {
         val TAG = "Firebase"
+        val START_AFTER_NOW = 30000 // Start in half a minute
+        val END_AFTER_NOW = 60000 // End in a minute
     }
 }
