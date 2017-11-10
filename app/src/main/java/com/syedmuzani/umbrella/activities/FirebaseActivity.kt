@@ -31,8 +31,13 @@ class FirebaseActivity : AppCompatActivity() {
         }
     }
 
-    /** Holds a single block of start/end timestamps for this, in the form that can be understood
-     * by Firebase **/
+    /**
+     * Holds a single block of start/end timestamps for this, in the form that can be understood
+     * by Firebase.
+     *
+     * Warning: Calendar takes timestamps in milliseconds, whereas the website handles time
+     * in seconds.
+     **/
     internal class FirebaseTimestamp {
         var start: Long = 0
         var end: Long = 0
@@ -57,8 +62,8 @@ class FirebaseActivity : AppCompatActivity() {
     /** Sets up the datetime on the Firebase server **/
     private fun setupDatetime() {
         val now: Long = Calendar.getInstance().timeInMillis
-        val startTime = now + START_AFTER_NOW
-        val endTime = now + END_AFTER_NOW
+        val startTime = now / 1000 + START_AFTER_NOW
+        val endTime = now / 1000 + END_AFTER_NOW
 
         val database = FirebaseDatabase.getInstance()
         val refDate = database.getReference("datetime")
@@ -76,9 +81,11 @@ class FirebaseActivity : AppCompatActivity() {
         })
     }
 
-    /** Displays the data whenever the start and end time on the listener is changed.
+    /**
+     * Displays the data whenever the start and end time on the listener is changed.
      * This will show different interfaces based on whether the time is before, after, or during
-     * the two timers **/
+     * the two timers
+     **/
     private fun displayData(dataSnapshot: DataSnapshot) {
         val timer: FirebaseTimestamp = dataSnapshot.getValue(FirebaseTimestamp::class.java)!!
         tStart = Timestamp(timer.start * 1000)
@@ -119,7 +126,7 @@ class FirebaseActivity : AppCompatActivity() {
 
             override fun onTick(millisLeft: Long) {
                 val timerText = "Seconds to end: " + millisLeft / 1000
-                textStatus.text = "Time is happening\n$timerText"
+                textStatus.text = "Timer has started\n$timerText"
             }
 
             override fun onFinish() {
@@ -155,7 +162,7 @@ class FirebaseActivity : AppCompatActivity() {
 
     companion object {
         val TAG = "Firebase"
-        val START_AFTER_NOW = 30000 // Start in half a minute
-        val END_AFTER_NOW = 60000 // End in a minute
+        val START_AFTER_NOW = 30 // Start in half a minute
+        val END_AFTER_NOW = 60 // End in a minute
     }
 }
