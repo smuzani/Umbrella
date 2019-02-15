@@ -26,7 +26,7 @@ class ToDoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_to_do)
-        lvItems = findViewById(R.id.lvItems) as ListView
+        lvItems = findViewById(R.id.lvItems)
         readItems()
         itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items)
         lvItems.adapter = itemsAdapter
@@ -37,7 +37,7 @@ class ToDoActivity : AppCompatActivity() {
     fun setupAddItem() {
         val button: Button = find(R.id.btnAddItem)
         button.setOnClickListener {
-            val etNewItem = findViewById(R.id.etNewItem) as EditText
+            val etNewItem: EditText = findViewById(R.id.etNewItem)
             val itemText = etNewItem.text.toString()
             itemsAdapter.add(itemText)
             etNewItem.setText("")
@@ -46,8 +46,7 @@ class ToDoActivity : AppCompatActivity() {
     }
 
     private fun setupListViewListener() {
-        lvItems.onItemLongClickListener = AdapterView.OnItemLongClickListener {
-            adapter, item, pos, id ->
+        lvItems.onItemLongClickListener = AdapterView.OnItemLongClickListener { adapter, item, pos, id ->
             items.removeAt(pos)
             itemsAdapter.notifyDataSetChanged()
             writeItems()
@@ -59,8 +58,8 @@ class ToDoActivity : AppCompatActivity() {
         val filesDir = filesDir
         val todoFile = File(filesDir, "todo.txt")
         try {
-            items = ArrayList<String>( todoFile.readLines() ) // Don't even need commons.io
-            Log.v("ToDo", "Loaded from file: " +items)
+            items = ArrayList<String>(todoFile.readLines()) // Don't even need commons.io
+            Log.v("ToDo", "Loaded from file: " + items)
         } catch (e: IOException) {
             items = ArrayList<String>()
             items.add("First Item")

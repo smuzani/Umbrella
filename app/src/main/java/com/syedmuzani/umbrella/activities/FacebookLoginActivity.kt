@@ -10,6 +10,7 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.syedmuzani.umbrella.R
+import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 
 /**
@@ -22,7 +23,7 @@ class FacebookLoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar: Toolbar = find(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         callbackManager = CallbackManager.Factory.create()

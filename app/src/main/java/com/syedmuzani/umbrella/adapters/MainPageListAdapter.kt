@@ -40,9 +40,6 @@ class MainPageListAdapter(val items: List<MainMenuLink>): Adapter<MainPageListAd
     }
 
     companion object {
-        val PAYMENT_MANUAL = "Manual Bank Transfer"
-        val PAYMENT_BANK = "Online Bank Transfer"
-        val PAYMENT_CARD = "Credit/Debit Card"
-        val PAYMENT_EWALLET = "E-Wallet"
+
     }
 }

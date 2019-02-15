@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.listview)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        val rv = findViewById(R.id.rv) as RecyclerView
+        val rv: RecyclerView = findViewById(R.id.rv)
         initRecyclerView()
         rv.layoutManager = LinearLayoutManager(this)
         val orientation = (rv.layoutManager as LinearLayoutManager).orientation
