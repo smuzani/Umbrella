@@ -85,3 +85,5 @@ captures/
 *.jks
 *.keystore
 
+
+\.idea/caches/

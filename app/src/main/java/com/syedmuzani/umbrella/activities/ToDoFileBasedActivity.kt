@@ -14,10 +14,11 @@ import java.io.IOException
 
 /**
  * To Do list based on https://guides.codepath.com/android/Basic-Todo-App-Tutorial
+ * Saves to file
  * TODO: Improve with https://www.sitepoint.com/building-a-ui-with-kotlin-and-anko/
  */
 
-class ToDoActivity : AppCompatActivity() {
+class ToDoFileBasedActivity : AppCompatActivity() {
 
     lateinit private var items: ArrayList<String>
     lateinit private var itemsAdapter: ArrayAdapter<String>
@@ -46,7 +47,7 @@ class ToDoActivity : AppCompatActivity() {
     }
 
     private fun setupListViewListener() {
-        lvItems.onItemLongClickListener = AdapterView.OnItemLongClickListener { adapter, item, pos, id ->
+        lvItems.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, pos, _ ->
             items.removeAt(pos)
             itemsAdapter.notifyDataSetChanged()
             writeItems()

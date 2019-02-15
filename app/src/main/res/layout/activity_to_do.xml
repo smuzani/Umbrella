@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ToDoActivity">
+    tools:context=".activities.ToDoFileBasedActivity">
 
     <ListView
         android:id="@+id/lvItems"
@@ -24,7 +24,8 @@
         android:layout_alignTop="@+id/btnAddItem"
         android:layout_toLeftOf="@+id/btnAddItem"
         android:layout_toStartOf="@+id/btnAddItem"
-        android:hint="Enter a new item" />
+        android:hint="@string/enter_a_new_item"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btnAddItem"
@@ -33,6 +34,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="Add Item" />
+        android:text="@string/add_item" />
 
 </RelativeLayout>

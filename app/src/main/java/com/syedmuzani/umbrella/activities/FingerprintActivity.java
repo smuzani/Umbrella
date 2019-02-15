@@ -67,24 +67,24 @@ public class FingerprintActivity extends AppCompatActivity {
             //Check whether the device has a fingerprint sensor//
             if (!fingerprintManager.isHardwareDetected()) {
                 // If a fingerprint sensor isn’t available, then inform the user that they’ll be unable to use your app’s fingerprint functionality//
-                textView.setText("Your device doesn't support fingerprint authentication");
+                textView.setText(R.string.fingerprint_auth_error);
             }
             //Check whether the user has granted your app the USE_FINGERPRINT permission//
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
                 // If your app doesn't have this permission, then display the following text//
-                textView.setText("Please enable the fingerprint permission");
+                textView.setText(R.string.fingerprint_request_permission);
             }
 
             //Check that the user has registered at least one fingerprint//
             if (!fingerprintManager.hasEnrolledFingerprints()) {
                 // If the user hasn’t configured any fingerprints, then display the following message//
-                textView.setText("No fingerprint configured. Please register at least one fingerprint in your device's Settings");
+                textView.setText(R.string.fingerprint_no_fingerprints);
             }
 
             //Check that the lockscreen is secured//
             if (!keyguardManager.isKeyguardSecure()) {
                 // If the user hasn’t secured their lockscreen with a PIN password or pattern, then display the following text//
-                textView.setText("Please enable lockscreen security in your device's Settings");
+                textView.setText(R.string.fingerprint_lockscreen);
             } else {
                 try {
 
@@ -182,7 +182,7 @@ public class FingerprintActivity extends AppCompatActivity {
     }
 
     private class FingerprintException extends Exception {
-        public FingerprintException(Exception e) {
+        FingerprintException(Exception e) {
             super(e);
             Log.w(TAG, "generateKey error: " + e.toString());
         }

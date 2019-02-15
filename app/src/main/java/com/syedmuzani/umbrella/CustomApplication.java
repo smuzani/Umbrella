@@ -3,7 +3,6 @@ package com.syedmuzani.umbrella;
 import android.app.Application;
 import android.content.res.Configuration;
 
-import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 /**
@@ -22,7 +21,6 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         /* Facebook */
-        FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
     }
 

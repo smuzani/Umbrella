@@ -17,7 +17,7 @@ class VideoActivity : AppCompatActivity() {
         playVideo(vid)
     }
 
-    fun playVideo(mVideoView: VideoView) {
+    private fun playVideo(mVideoView: VideoView) {
         mVideoView.setVideoURI(Uri.parse("android.resource://" + packageName +"/"+ R.raw.nope))
         mVideoView.setMediaController(MediaController(this))
         mVideoView.requestFocus()

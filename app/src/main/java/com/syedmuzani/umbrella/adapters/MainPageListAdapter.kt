@@ -12,8 +12,6 @@ import org.jetbrains.anko.find
 
 
 class MainPageListAdapter(val items: List<MainMenuLink>): Adapter<MainPageListAdapter.ViewHold>() {
-    private val TAG = "MainPageListAdapter"
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHold {
         val view = LayoutInflater.from(parent.context)
                 .inflate(android.R.layout.simple_list_item_1, parent, false)
@@ -40,6 +38,6 @@ class MainPageListAdapter(val items: List<MainMenuLink>): Adapter<MainPageListAd
     }
 
     companion object {
-
+        private const val TAG = "MainPageListAdapter"
     }
 }

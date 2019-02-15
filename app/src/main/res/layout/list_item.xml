@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:paddingLeft="24dp"
+    android:paddingRight="24dp"
     android:minHeight="48dp"
     android:background="?android:attr/selectableItemBackground"
     style="@style/TextAppearance.AppCompat.Body2"

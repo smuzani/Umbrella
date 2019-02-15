@@ -41,7 +41,7 @@ class LoginFragment : Fragment() {
     private val callback = object : FacebookCallback<LoginResult> {
         override fun onSuccess(loginResult: LoginResult) {
             accessToken = loginResult.accessToken
-            context.toast("Success!")
+            context?.toast("Success!")
             if (accessToken != null) {
                 getUserDetailsFromFB(accessToken!!)
             }
@@ -49,11 +49,11 @@ class LoginFragment : Fragment() {
         }
 
         override fun onCancel() {
-            context.toast("Canceled")
+            context?.toast("Canceled")
         }
 
         override fun onError(e: FacebookException) {
-            context.toast("Error: " + e.toString())
+            context?.toast("Error: $e")
         }
     }
 
@@ -89,12 +89,12 @@ class LoginFragment : Fragment() {
     // TODO Bug: Is not being called upon logout
     fun setButton() {
         if (!isLoggedIn()) {
-            btLogin.text = "Facebook Login"
+            btLogin.text = R.string.fblogin_login.toString()
             btLogin.setOnClickListener {
                 LoginManager.getInstance().logInWithReadPermissions(this, permissions)
             }
         } else {
-            btLogin.text = "Facebook Log Out"
+            btLogin.text = R.string.fblogin_logout.toString()
             btLogin.setOnClickListener {
                 LoginManager.getInstance().logOut()
             }
@@ -102,21 +102,21 @@ class LoginFragment : Fragment() {
     }
 
     private fun updateWithToken(currentAccessToken: AccessToken?) {
-        val TIMEOUT = 20000L
+        val timeOut = 20000L
         if (currentAccessToken != null) {
             Handler().postDelayed({
                 displayMessage(Profile.getCurrentProfile())
-            }, TIMEOUT)
+            }, timeOut)
         } else {
             Handler().postDelayed({
-                context.toast("Not logged in")
-            }, TIMEOUT)
+                context?.toast("Not logged in")
+            }, timeOut)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater!!.inflate(R.layout.fragment_login, container, false)
+        val v = inflater.inflate(R.layout.fragment_login, container, false)
         val loginButton: LoginButton = v.find(R.id.login_button)
         btLogin = v.find(R.id.bt_login)
         setButton()
@@ -127,7 +127,7 @@ class LoginFragment : Fragment() {
         return v;
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 

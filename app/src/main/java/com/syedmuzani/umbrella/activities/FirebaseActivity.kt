@@ -109,7 +109,8 @@ class FirebaseActivity : AppCompatActivity() {
 
             override fun onTick(millisLeft: Long) {
                 val timerText = "Seconds to start: " + millisLeft / 1000
-                textStatus.text = "Time has not yet started\n$timerText"
+                val statusText = "Time has not yet started\n$timerText"
+                textStatus.text = statusText
             }
 
             override fun onFinish() {
@@ -126,7 +127,8 @@ class FirebaseActivity : AppCompatActivity() {
 
             override fun onTick(millisLeft: Long) {
                 val timerText = "Seconds to end: " + millisLeft / 1000
-                textStatus.text = "Timer has started\n$timerText"
+                val statusText = "Time has started\n$timerText"
+                textStatus.text = statusText
             }
 
             override fun onFinish() {
@@ -137,7 +139,7 @@ class FirebaseActivity : AppCompatActivity() {
 
     /** Shows an interface after the timer has ended **/
     private fun showTimeAfterEnd() {
-        textStatus.text = "Time ended"
+        textStatus.text = R.string.firebase_time_ended.toString()
     }
 
     /** Test function to check if Firebase connection is set up properly **/
@@ -161,8 +163,7 @@ class FirebaseActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TAG = "Firebase"
-        val START_AFTER_NOW = 30 // Start in half a minute
-        val END_AFTER_NOW = 60 // End in a minute
+        const val START_AFTER_NOW = 30 // Start in half a minute
+        const val END_AFTER_NOW = 60 // End in a minute
     }
 }
