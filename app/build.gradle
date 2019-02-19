@@ -68,6 +68,7 @@ dependencies {
 
     // Anko SQLite
     implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
     
     testCompile 'junit:junit:4.12'
 }

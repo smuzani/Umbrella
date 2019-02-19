@@ -49,6 +49,7 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.ToDoFileBasedActivity" />
+        <activity android:name=".activities.ToDoDatabasedActivity" />
         <activity android:name=".activities.DesignPatternsActivity" />
         <activity android:name=".activities.ConstraintLayoutActivity" />
         <activity android:name=".activities.DslActivity" />

@@ -20,9 +20,9 @@ import java.io.IOException
 
 class ToDoFileBasedActivity : AppCompatActivity() {
 
-    lateinit private var items: ArrayList<String>
-    lateinit private var itemsAdapter: ArrayAdapter<String>
-    lateinit private var lvItems: ListView
+    private lateinit var items: ArrayList<String>
+    private lateinit var itemsAdapter: ArrayAdapter<String>
+    private lateinit var lvItems: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class ToDoFileBasedActivity : AppCompatActivity() {
         setupAddItem()
     }
 
-    fun setupAddItem() {
+    private fun setupAddItem() {
         val button: Button = find(R.id.btnAddItem)
         button.setOnClickListener {
             val etNewItem: EditText = findViewById(R.id.etNewItem)
@@ -60,7 +60,7 @@ class ToDoFileBasedActivity : AppCompatActivity() {
         val todoFile = File(filesDir, "todo.txt")
         try {
             items = ArrayList<String>(todoFile.readLines()) // Don't even need commons.io
-            Log.v("ToDo", "Loaded from file: " + items)
+            Log.v("ToDo", "Loaded from file: $items")
         } catch (e: IOException) {
             items = ArrayList<String>()
             items.add("First Item")

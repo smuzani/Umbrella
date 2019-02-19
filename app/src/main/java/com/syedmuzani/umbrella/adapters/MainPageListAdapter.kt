@@ -11,7 +11,7 @@ import com.syedmuzani.umbrella.models.MainMenuLink
 import org.jetbrains.anko.find
 
 
-class MainPageListAdapter(val items: List<MainMenuLink>): Adapter<MainPageListAdapter.ViewHold>() {
+class MainPageListAdapter(private val items: List<MainMenuLink>): Adapter<MainPageListAdapter.ViewHold>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHold {
         val view = LayoutInflater.from(parent.context)
                 .inflate(android.R.layout.simple_list_item_1, parent, false)
